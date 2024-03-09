@@ -1,0 +1,12 @@
+3/8/24
+
+I copied the contents of demo_trader.py from:
+    https://imc-prosperity.notion.site/Writing-an-Algorithm-in-Python-658e233a26e24510bfccf0b1df647858
+
+I made zero modifications to the code.
+
+I uploaded it to the Tutorial dashboard:
+    https://prosperity.imc.com/dashboard
+
+The resulting logfile is:
+    c1162a78-cf25-4f6c-acd5-672ff2ced149.log
