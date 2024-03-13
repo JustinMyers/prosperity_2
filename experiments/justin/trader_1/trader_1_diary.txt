@@ -1,0 +1,3 @@
+This trader finds the volume from the previous round, and then tries to find the best prices that would support that volume.
+
+That didn't work, so I added one to my buy price and subtracted one from my sell price.
