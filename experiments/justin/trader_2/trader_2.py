@@ -37,10 +37,12 @@ class Trader:
             sell_order_price = sell_order_prices[0]
             sell_order_price -= 1
 
-            sell_quantity = -20 - position
+            limit_width = 20
+
+            sell_quantity = -limit_width - position
             orders.append(Order(product, sell_order_price, sell_quantity))
 
-            buy_quantity = 20 - position
+            buy_quantity = limit_width - position
             orders.append(Order(product, buy_order_price, buy_quantity))
 
             result[product] = orders
