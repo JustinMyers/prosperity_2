@@ -5,18 +5,18 @@ class Trader:
     def run(self, state: TradingState):
         result = {}
         for product in state.order_depths:
-            if product not in state.market_trades:
-                volume = 0
-            else:
-                market_trades = state.market_trades[product]
-                volume = 0
-                for trade in market_trades:
-                    volume += trade.quantity
+            # if product not in state.market_trades:
+            #     volume = 0
+            # else:
+            #     market_trades = state.market_trades[product]
+            #     volume = 0
+            #     for trade in market_trades:
+            #         volume += abs(trade.quantity)
 
-            if product in state.own_trades:
-                own_trades = state.own_trades[product]
-                for trade in own_trades:
-                    volume += trade.quantity
+            # if product in state.own_trades:
+            #     own_trades = state.own_trades[product]
+            #     for trade in own_trades:
+            #         volume += abs(trade.quantity)
 
             if product in state.position:
                 position = state.position[product]
