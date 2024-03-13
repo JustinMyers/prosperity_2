@@ -1,0 +1,5 @@
+this Trader tries to place the maximum quantity of buy and sell orders at the same time.
+
+The prices it offers are 1 better than the best price in the market.
+
+It does pretty well.
