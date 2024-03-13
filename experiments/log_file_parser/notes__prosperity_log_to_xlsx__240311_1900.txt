@@ -1,0 +1,5 @@
+copy log file to prosperity_2.log.txt
+
+run log file to excel
+    python3 python_file_csv_240311_1008.py
+
