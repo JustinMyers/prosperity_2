@@ -4,9 +4,11 @@
 I haven't solved how to use a trader script from another folder/directory.
 something about the namespaces.
 
-put "local_try_trader.py" in filder with your trader script.
+put these files in the foled with yur Trader script:
+  local_try_trader.py
+  datamodel.py
 
--------------------------------------------------
+---------
 
 locally run trader script (example:  demo_trader)
 
