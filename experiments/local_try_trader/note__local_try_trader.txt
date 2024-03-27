@@ -1,0 +1,23 @@
+
+-------------------------------------------------
+
+I haven't solved how to use a trader script from another folder/directory.
+something about the namespaces.
+
+put "local_try_trader.py" in filder with your trader script.
+
+-------------------------------------------------
+
+locally run trader script (example:  demo_trader)
+
+python3 local_try_trader.py --trader_filename demo_trader
+
+-------------------------------------------------
+
+***
+I added this module:  (maybe others while I was developing this)
+sudo apt install python3-jsonpickle
+    to add jsonpickle, I can use that "python3-jsonpickle" command
+
+-------------------------------------------------
+
