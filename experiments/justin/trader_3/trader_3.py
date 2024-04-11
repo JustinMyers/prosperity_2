@@ -34,19 +34,22 @@ class Trader:
             
             sell_orders = order_depth.sell_orders
             sell_order_prices = sorted(sell_orders.keys())
-            sell_order_price = sell_order_prices[0]
+            sell_order_price = sell_order_prices[-1]
  
             limit_width = 20
 
             buy_order_price += 1
             sell_order_price -= 1
 
-            # if the absolute value of position is equal to the limit width we'll offer better prices
-            if position > 0:
-                buy_order_price += 2
-            
             if position < 0:
-                sell_order_price -= 2
+                buy_order_price += 1
+            if position < -(limit_width / 2):
+                buy_order_price += 1
+            
+            if position > 0:
+                sell_order_price -= 1
+            if position > (limit_width / 2):
+                sell_order_price -= 1
 
             sell_quantity = -limit_width - position
             orders.append(Order(product, sell_order_price, sell_quantity))
