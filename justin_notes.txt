@@ -1,0 +1,28 @@
+From Discord:
+Jacek:
+following sequence applies:
+bots -> your orders -> bots -> cleanup
+Whatever orders match to trades updates  your profit
+Exchange will close positions at the end of simulation using price you can't access. It will be close to mid_price listed in CSV file
+mid price is just mean of best bid and best ask at the moment right?
+Masa — Today at 9:45 AM
+How is the profit_and_loss column calculated? are these the realized profits/loss after closing the position?
+Jacek — Today at 9:48 AM
+Not really
+When trade is done you have some position (when you buy) or cash (when you sell) based on that 
+Position item is evaluated using hidden price with value close to mid_price, cash remains unchanged 
+Note there is a single line for each product inside the log
+If you make no trade PnL will be zero anyway
+aladin — Today at 9:50 AM
+Position item is evaluated using hidden price with value close to mid_price, cash remains unchanged 
+can you explain this statement using an example?
+Jacek — Today at 9:54 AM
+you buy single AMETHYSTS for 9999 seashells and leave it as-is for 2 000 loops
+it means you have cash of -9999 and single AMETHYSTS
+Value of the AMETHYSTS changes over time and will reach 10 001 at the end
+this means your profit will be 10 001 - 9999 = 2 for AMETHYSTS product
+If you will manage to sell it on 10 002 then no AMETHYSTS is left in you positions and cash will be 10 002 - 9999 = 3
+Idea of HFT is kind of similar
+Similar for sell
+
+
