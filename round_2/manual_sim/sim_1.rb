@@ -46,3 +46,5 @@ end
 pp results.count
 
 pp results.keys.sort_by { |k| results[k] }.reverse.first
+
+pp results.sort_by{|k,v|-v}[0..4]

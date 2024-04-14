@@ -1,0 +1,363 @@
+https://www.datacamp.com/tutorial/pandas-read-csv
+
+
+import pandas as pd
+
+# Read the CSV file
+prices_round_2_day_m1 = pd.read_csv("prices_round_2_day_-1.csv", sep=";")
+prices_round_2_day_0 = pd.read_csv("prices_round_2_day_0.csv", sep=";")
+prices_round_2_day_1 = pd.read_csv("prices_round_2_day_1.csv", sep=";")
+
+# View the first 5 rows
+>>> prices_round_2_day_m1.head()
+   timestamp  ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF   SUNLIGHT  HUMIDITY  DAY
+0          0  1200.00             1.5           10.5           -2.0  2500.0000  79.00000   -1
+1        100  1201.75             1.5            9.5           -2.0  2499.4197  79.00410   -1
+2        200  1201.75             1.5            9.5           -2.0  2498.8457  79.00821   -1
+3        300  1201.75             1.5            9.5           -2.0  2498.2780  79.01234   -1
+4        400  1201.75             1.5            9.5           -2.0  2497.7166  79.01649   -1
+
+-----------------------------------
+
+-----------------------------------
+
+https://www.geeksforgeeks.org/load-csv-data-into-list-and-dictionary-using-python/
+
+----
+Example 2: Loading CSV to dictionary 
+
+import csv
+ 
+filename ="Geeks.csv"
+ 
+# opening the file using "with"
+# statement
+with open(filename, 'r') as data:
+  for line in csv.DictReader(data):
+      print(line)
+
+----
+Example 3: Loading CSV into list of Dictionaries
+
+from csv import DictReader
+# open file in read mode
+with open("geeks.csv", 'r') as f:
+     
+    dict_reader = DictReader(f)
+     
+    list_of_dict = list(dict_reader)
+   
+    print(list_of_dict)
+-----------------------------------
+
+-----------------------------------
+
+import csv
+from csv import DictReader
+
+with open("prices_round_2_day_-1.csv", 'r') as f:
+     
+    dict_reader = DictReader(f)
+    
+-----------------------------------
+
+-----------------------------------
+https://stackoverflow.com/questions/6740918/creating-a-dictionary-from-a-csv-file
+
+input_file = csv.DictReader(open("coors.csv"))
+
+input_file = csv.DictReader(open("prices_round_2_day_-1.csv"))
+
+This isn't elegant but a one line solution using pandas.
+
+import pandas as pd
+pd.read_csv('coors.csv', header=None, index_col=0, squeeze=True).to_dict()
+
+from_csv = pd.read_csv('prices_round_2_day_-1.csv', sep=";").to_dict()
+
+-----------------------------------
+
+-----------------------------------
+
+
+import pandas as pd
+
+prices_round_2_day_m1 = pd.read_csv("prices_round_2_day_-1.csv", sep=";")
+prices_round_2_day_0 = pd.read_csv("prices_round_2_day_0.csv", sep=";")
+prices_round_2_day_1 = pd.read_csv("prices_round_2_day_1.csv", sep=";")
+
+prices_round_2_day_1.to_dict()['HUMIDITY'].keys()
+
+prices_round_2_day_1.to_dict().keys()
+dict_keys(['timestamp', 'ORCHIDS', 'TRANSPORT_FEES', 'EXPORT_TARIFF', 'IMPORT_TARIFF', 'SUNLIGHT', 'HUMIDITY', 'DAY'])
+
+>>> list(prices_round_2_day_1.to_dict().keys())
+['timestamp', 'ORCHIDS', 'TRANSPORT_FEES', 'EXPORT_TARIFF', 'IMPORT_TARIFF', 'SUNLIGHT', 'HUMIDITY', 'DAY']
+
+def csv_to_list_of_dicts(filename)
+
+
+-----------------------------------
+
+-----------------------------------
+
+https://stackoverflow.com/questions/55369159/how-to-perform-three-variable-correlation-with-python-pandas
+
+------------
+
+import math
+
+df = pd.DataFrame({
+    'IQ':[100,140,90,85,120,110,95], 
+    'GPA':[3.2,4.0,2.9,2.5,3.6,3.4,3.0],
+    'SALARY':[45e3,150e3,30e3,25e3,75e3,60e3,38e3]
+    })
+
+# Get pairwise correlation coefficients
+cor = df.corr()
+
+# Independent variables
+x = 'IQ'
+y = 'GPA'
+
+# Dependent variable
+z = 'SALARY'
+
+# Pairings
+xz = cor.loc[ x, z ]
+yz = cor.loc[ y, z ]
+xy = cor.loc[ x, y ]
+
+Rxyz = math.sqrt((abs(xz**2) + abs(yz**2) - 2*xz*yz*xy) / (1-abs(xy**2)) )
+R2 = Rxyz**2
+
+# Calculate adjusted R-squared
+n = len(df) # Number of rows
+k = 2       # Number of independent variables
+R2_adj = 1 - ( ((1-R2)*(n-1)) / (n-k-1) )
+
+-----------------------------------
+
+prices_round_2_day_m1 = pd.read_csv("prices_round_2_day_-1.csv", sep=";")
+prices_round_2_day_0 = pd.read_csv("prices_round_2_day_0.csv", sep=";")
+prices_round_2_day_1 = pd.read_csv("prices_round_2_day_1.csv", sep=";")
+
+>>> prices_round_2_day_m1.describe()
+            timestamp       ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF      SUNLIGHT      HUMIDITY      DAY
+count    10001.000000  10001.000000    10001.000000   10001.000000   10001.000000  10001.000000  10001.000000  10001.0
+mean    500000.000000   1208.804745        1.400110      10.071043      -2.590221   3619.750103     85.621408     -1.0
+std     288718.435504     22.073794        0.195987       1.397579       0.280179    548.985284      4.946191      0.0
+min          0.000000   1146.750000        1.100000       8.500000      -3.600000   2471.594000     74.912860     -1.0
+25%     250000.000000   1195.750000        1.200000       9.500000      -2.600000   3164.699200     82.979294     -1.0
+50%     500000.000000   1209.750000        1.400000       9.500000      -2.600000   3666.911400     85.795170     -1.0
+75%     750000.000000   1222.750000        1.500000      10.500000      -2.400000   4027.096400     88.584860     -1.0
+max    1000000.000000   1257.250000        2.100000      16.000000      -2.000000   4513.986300     95.209755     -1.0
+>>> prices_round_2_day_0.describe()
+            timestamp       ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF      SUNLIGHT      HUMIDITY      DAY
+count    10001.000000  10001.000000    10001.000000   10001.000000   10001.000000  10001.000000  10001.000000  10001.0
+mean    500000.000000   1041.251175        1.384912       9.961154      -2.570763   2279.533353     74.036523      0.0
+std     288718.435504     45.142712        0.193678       1.584335       0.349321    813.568530     10.199225      0.0
+min          0.000000    960.750000        1.100000       8.500000      -4.200000   1397.304900     59.999580      0.0
+25%     250000.000000   1001.750000        1.300000       9.500000      -2.600000   1811.042400     67.049130      0.0
+50%     500000.000000   1039.250000        1.300000       9.500000      -2.600000   2000.000000     70.277214      0.0
+75%     750000.000000   1083.250000        1.500000      10.500000      -2.400000   2400.000000     83.000000      0.0
+max    1000000.000000   1122.000000        2.100000      19.500000      -2.000000   4500.338000     95.000000      0.0
+>>> prices_round_2_day_1.describe()
+            timestamp       ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF      SUNLIGHT      HUMIDITY      DAY
+count    10001.000000  10001.000000    10001.000000   10001.000000   10001.000000  10001.000000  10001.000000  10001.0
+mean    500000.000000   1060.797645        0.926107       9.151935      -5.054445   2431.936381     77.562755      1.0
+std     288718.435504     29.101624        0.164156       0.807551       0.546315    676.201827      8.010117      0.0
+min          0.000000   1009.250000        0.700000       7.500000      -6.500000   1669.296600     67.536980      1.0
+25%     250000.000000   1038.750000        0.800000       8.500000      -5.500000   1951.776000     72.174774      1.0
+50%     500000.000000   1053.750000        0.900000       9.500000      -5.000000   2219.208300     74.889440      1.0
+75%     750000.000000   1080.750000        1.000000       9.500000      -4.500000   2608.087400     79.031670      1.0
+max    1000000.000000   1133.250000        1.700000      13.500000      -4.500000   4219.218000     97.513270      1.0
+
+-----------------------------------
+
+https://stackoverflow.com/questions/6558765/how-do-you-see-the-entire-command-history-in-interactive-python
+
+import readline; print('\n'.join([str(readline.get_history_item(i + 1)) for i in range(readline.get_current_history_length())]))
+
+-----------------------------------
+
+def sunlight_production(sunlight_value):
+    sunlight_70 = (10000 / 24 * 7)  # 2916.666666666667
+    minutes_10 = (10000 / 24 / 6)  # 69.44444444444444
+    sunlight_production = 100.0
+    if (sunlight_value < sunlight_70):
+        sunlight_deficit = sunlight_70 - sunlight_value
+        sunlight_penalty_pct = sunlight_deficit / minutes_10 * 4
+        sunlight_production -= sunlight_penalty_pct / 100
+    return sunlight_production
+
+# https://pandas.pydata.org/docs/getting_started/intro_tutorials/05_add_columns.html
+# https://saturncloud.io/blog/how-to-create-new-values-in-a-pandas-dataframe-column-based-on-values-from-another-column/#:~:text=To%20create%20the%20new%20column,and%20returns%20the%20corresponding%20category.
+
+prices_round_2_day_m1['sunlight_production'] = prices_round_2_day_m1['SUNLIGHT'].apply(sunlight_production)
+
+-----------------------------------
+
+prices_round_2_day_m1.corr()
+                     timestamp   ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF  SUNLIGHT  HUMIDITY  DAY  sunlight_production
+timestamp             1.000000 -0.053197       -0.131654       0.011234      -0.476416  0.316027 -0.375214  NaN             0.375080
+ORCHIDS              -0.053197  1.000000        0.103595       0.187337      -0.137264  0.632492  0.658801  NaN             0.063393
+TRANSPORT_FEES       -0.131654  0.103595        1.000000       0.156977      -0.084847 -0.090303  0.078135  NaN            -0.262147
+EXPORT_TARIFF         0.011234  0.187337        0.156977       1.000000      -0.077444  0.357167  0.273492  NaN             0.189727
+IMPORT_TARIFF        -0.476416 -0.137264       -0.084847      -0.077444       1.000000 -0.404930 -0.098170  NaN            -0.345253
+SUNLIGHT              0.316027  0.632492       -0.090303       0.357167      -0.404930  1.000000  0.681110  NaN             0.528449
+HUMIDITY             -0.375214  0.658801        0.078135       0.273492      -0.098170  0.681110  1.000000  NaN             0.264250
+DAY                        NaN       NaN             NaN            NaN            NaN       NaN       NaN  NaN                  NaN
+sunlight_production   0.375080  0.063393       -0.262147       0.189727      -0.345253  0.528449  0.264250  NaN             1.000000
+
+-----------------------------------
+
+-----------------------------------
+>>> prices_round_2_day_m1.corr()
+                     timestamp   ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF  SUNLIGHT  HUMIDITY  DAY  sunlight_production  humidity_production  production_penalty
+timestamp             1.000000 -0.053197       -0.131654       0.011234      -0.476416  0.316027 -0.375214  NaN             0.375080             0.377132            0.539558
+ORCHIDS              -0.053197  1.000000        0.103595       0.187337      -0.137264  0.632492  0.658801  NaN             0.063393            -0.592760           -0.162457
+TRANSPORT_FEES       -0.131654  0.103595        1.000000       0.156977      -0.084847 -0.090303  0.078135  NaN            -0.262147            -0.094100           -0.310099
+EXPORT_TARIFF         0.011234  0.187337        0.156977       1.000000      -0.077444  0.357167  0.273492  NaN             0.189727            -0.327725            0.071767
+IMPORT_TARIFF        -0.476416 -0.137264       -0.084847      -0.077444       1.000000 -0.404930 -0.098170  NaN            -0.345253             0.088650           -0.328292
+SUNLIGHT              0.316027  0.632492       -0.090303       0.357167      -0.404930  1.000000  0.681110  NaN             0.528449            -0.682539            0.290448
+HUMIDITY             -0.375214  0.658801        0.078135       0.273492      -0.098170  0.681110  1.000000  NaN             0.264250            -0.979167           -0.100886
+DAY                        NaN       NaN             NaN            NaN            NaN       NaN       NaN  NaN                  NaN                  NaN                 NaN
+sunlight_production   0.375080  0.063393       -0.262147       0.189727      -0.345253  0.528449  0.264250  NaN             1.000000            -0.311833            0.930046
+humidity_production   0.377132 -0.592760       -0.094100      -0.327725       0.088650 -0.682539 -0.979167  NaN            -0.311833             1.000000            0.059078
+production_penalty    0.539558 -0.162457       -0.310099       0.071767      -0.328292  0.290448 -0.100886  NaN             0.930046             0.059078            1.000000
+>>> prices_round_2_day_0.corr()
+                     timestamp   ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF  SUNLIGHT  HUMIDITY  DAY  sunlight_production  humidity_production  production_penalty
+timestamp             1.000000 -0.910968        0.227146      -0.129606      -0.605944 -0.798102 -0.833069  NaN            -0.844191             0.745552           -0.840672
+ORCHIDS              -0.910968  1.000000       -0.392528       0.224305       0.643642  0.722642  0.762024  NaN             0.737210            -0.690676            0.733460
+TRANSPORT_FEES        0.227146 -0.392528        1.000000      -0.117944      -0.122928 -0.012202 -0.233498  NaN            -0.029240             0.081484           -0.016659
+EXPORT_TARIFF        -0.129606  0.224305       -0.117944       1.000000       0.188685 -0.162667 -0.083308  NaN            -0.167285             0.250862           -0.165393
+IMPORT_TARIFF        -0.605944  0.643642       -0.122928       0.188685       1.000000  0.590216  0.392039  NaN             0.609440            -0.451064            0.620370
+SUNLIGHT             -0.798102  0.722642       -0.012202      -0.162667       0.590216  1.000000  0.843513  NaN             0.926672            -0.957773            0.937154
+HUMIDITY             -0.833069  0.762024       -0.233498      -0.083308       0.392039  0.843513  1.000000  NaN             0.803106            -0.913869            0.793670
+DAY                        NaN       NaN             NaN            NaN            NaN       NaN       NaN  NaN                  NaN                  NaN                 NaN
+sunlight_production  -0.844191  0.737210       -0.029240      -0.167285       0.609440  0.926672  0.803106  NaN             1.000000            -0.874369            0.998885
+humidity_production   0.745552 -0.690676        0.081484       0.250862      -0.451064 -0.957773 -0.913869  NaN            -0.874369             1.000000           -0.877066
+production_penalty   -0.840672  0.733460       -0.016659      -0.165393       0.620370  0.937154  0.793670  NaN             0.998885            -0.877066            1.000000
+>>> prices_round_2_day_1.corr()
+                     timestamp   ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF  SUNLIGHT  HUMIDITY  DAY  sunlight_production  humidity_production  production_penalty
+timestamp             1.000000 -0.519585       -0.244891      -0.045672       0.195793  0.691903 -0.583855  NaN             0.753328             0.505494            0.754510
+ORCHIDS              -0.519585  1.000000        0.626956       0.285203      -0.177622 -0.410192  0.622763  NaN            -0.478789            -0.740292           -0.501261
+TRANSPORT_FEES       -0.244891  0.626956        1.000000       0.354680      -0.181961 -0.215758  0.690930  NaN            -0.274295            -0.753663           -0.286277
+EXPORT_TARIFF        -0.045672  0.285203        0.354680       1.000000      -0.155385 -0.251020  0.277598  NaN            -0.214507            -0.413685           -0.215440
+IMPORT_TARIFF         0.195793 -0.177622       -0.181961      -0.155385       1.000000  0.452322 -0.155168  NaN             0.467613             0.242109            0.466924
+SUNLIGHT              0.691903 -0.410192       -0.215758      -0.251020       0.452322  1.000000 -0.262965  NaN             0.925362             0.389965            0.922060
+HUMIDITY             -0.583855  0.622763        0.690930       0.277598      -0.155168 -0.262965  1.000000  NaN            -0.374688            -0.918855           -0.386885
+DAY                        NaN       NaN             NaN            NaN            NaN       NaN       NaN  NaN                  NaN                  NaN                 NaN
+sunlight_production   0.753328 -0.478789       -0.274295      -0.214507       0.467613  0.925362 -0.374688  NaN             1.000000             0.484967            0.999130
+humidity_production   0.505494 -0.740292       -0.753663      -0.413685       0.242109  0.389965 -0.918855  NaN             0.484967             1.000000            0.502267
+production_penalty    0.754510 -0.501261       -0.286277      -0.215440       0.466924  0.922060 -0.386885  NaN             0.999130             0.502267            1.000000
+
+-----------------------------------
+
+>>> prices_round_2_day_m1.describe()
+            timestamp       ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF      SUNLIGHT      HUMIDITY      DAY  sunlight_production  humidity_production  production_penalty
+count    10001.000000  10001.000000    10001.000000   10001.000000   10001.000000  10001.000000  10001.000000  10001.0         10001.000000         10001.000000        10001.000000
+mean    500000.000000   1208.804745        1.400110      10.071043      -2.590221   3619.750103     85.621408     -1.0             0.986478             0.976028            0.962575
+std     288718.435504     22.073794        0.195987       1.397579       0.280179    548.985284      4.946191      0.0             0.047200             0.017314            0.044811
+min          0.000000   1146.750000        1.100000       8.500000      -3.600000   2471.594000     74.912860     -1.0             0.743638             0.939161            0.743638
+25%     250000.000000   1195.750000        1.200000       9.500000      -2.600000   3164.699200     82.979294     -1.0             1.000000             0.965661            0.956689
+50%     500000.000000   1209.750000        1.400000       9.500000      -2.600000   3666.911400     85.795170     -1.0             1.000000             0.976819            0.972345
+75%     750000.000000   1222.750000        1.500000      10.500000      -2.400000   4027.096400     88.584860     -1.0             1.000000             0.988083            0.984254
+max    1000000.000000   1257.250000        2.100000      16.000000      -2.000000   4513.986300     95.209755     -1.0             1.000000             1.000000            1.000000
+>>> prices_round_2_day_0.describe()
+            timestamp       ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF      SUNLIGHT      HUMIDITY      DAY  sunlight_production  humidity_production  production_penalty
+count    10001.000000  10001.000000    10001.000000   10001.000000   10001.000000  10001.000000  10001.000000  10001.0         10001.000000         10001.000000        10001.000000
+mean    500000.000000   1041.251175        1.384912       9.961154      -2.570763   2279.533353     74.036523      0.0             0.537328             0.989798            0.522887
+std     288718.435504     45.142712        0.193678       1.584335       0.349321    813.568530     10.199225      0.0             0.270694             0.018848            0.259928
+min          0.000000    960.750000        1.100000       8.500000      -4.200000   1397.304900     59.999580      0.0             0.124848             0.940000            0.122102
+25%     250000.000000   1001.750000        1.300000       9.500000      -2.600000   1811.042400     67.049130      0.0             0.363160             0.988000            0.356447
+50%     500000.000000   1039.250000        1.300000       9.500000      -2.600000   2000.000000     70.277214      0.0             0.472000             1.000000            0.461939
+75%     750000.000000   1083.250000        1.500000      10.500000      -2.400000   2400.000000     83.000000      0.0             0.702400             1.000000            0.668685
+max    1000000.000000   1122.000000        2.100000      19.500000      -2.000000   4500.338000     95.000000      0.0             1.000000             1.000000            1.000000
+>>> prices_round_2_day_1.describe()
+            timestamp       ORCHIDS  TRANSPORT_FEES  EXPORT_TARIFF  IMPORT_TARIFF      SUNLIGHT      HUMIDITY      DAY  sunlight_production  humidity_production  production_penalty
+count    10001.000000  10001.000000    10001.000000   10001.000000   10001.000000  10001.000000  10001.000000  10001.0         10001.000000         10001.000000        10001.000000
+mean    500000.000000   1060.797645        0.926107       9.151935      -5.054445   2431.936381     77.562755      1.0             0.639079             0.990476            0.625378
+std     288718.435504     29.101624        0.164156       0.807551       0.546315    676.201827      8.010117      0.0             0.234799             0.020473            0.233433
+min          0.000000   1009.250000        0.700000       7.500000      -6.500000   1669.296600     67.536980      1.0             0.281515             0.929947            0.268047
+25%     250000.000000   1038.750000        0.800000       8.500000      -5.500000   1951.776000     72.174774      1.0             0.444223             1.000000            0.431651
+50%     500000.000000   1053.750000        0.900000       9.500000      -5.000000   2219.208300     74.889440      1.0             0.598264             1.000000            0.584753
+75%     750000.000000   1080.750000        1.000000       9.500000      -4.500000   2608.087400     79.031670      1.0             0.822258             1.000000            0.811922
+max    1000000.000000   1133.250000        1.700000      13.500000      -4.500000   4219.218000     97.513270      1.0             1.000000             1.000000            1.000000
+
+-----------------------------------
+>>> prices_round_2_day_1[['production_penalty','sunlight_production','humidity_production','ORCHIDS']].head()
+   production_penalty  sunlight_production  humidity_production  ORCHIDS
+0            0.529600             0.529600                  1.0  1098.25
+1            0.529460             0.529460                  1.0  1098.25
+2            0.529320             0.529320                  1.0  1096.75
+3            0.529179             0.529179                  1.0  1097.00
+4            0.529037             0.529037                  1.0  1097.25
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
+-----------------------------------
+
