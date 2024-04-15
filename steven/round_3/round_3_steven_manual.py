@@ -30,3 +30,18 @@ map_values = {"G26": {"multiplier": 24, "hunters": 2},
               }
 
 print(map_values)
+
+tile_results = []
+for tile_key in map_values:
+    tile_values = map_values[tile_key]
+    basic_value = tile_values["multiplier"] / tile_values["hunters"]
+    
+    print(tile_key, basic_value, tile_values)
+    tile_results += [[basic_value, tile_key, tile_values]]
+    
+print("---")
+# print(tile_results)
+for tile_result in sorted(tile_results):
+    print(tile_result)
+
+    
