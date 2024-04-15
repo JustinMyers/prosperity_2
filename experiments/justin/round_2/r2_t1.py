@@ -10,8 +10,6 @@ class OrchidTrader:
 
         position = state.position[product] if product in state.position else 0
 
-        conversions = -position
-
         # sunlight = state.observations.conversionObservations["ORCHIDS"].sunlight
         # humidity = state.observations.conversionObservations["ORCHIDS"].humidity
         bidPrice = state.observations.conversionObservations["ORCHIDS"].bidPrice
@@ -33,10 +31,39 @@ class OrchidTrader:
         lowest_sell_order_price = sell_order_prices[0]
         highest_sell_order_price = sell_order_prices[-1]
 
-        if highest_buy_order_price > cost_of_import:
-            orders.append(Order(product, cost_of_import, -100))
-        elif lowest_sell_order_price < cost_of_export:
-            orders.append(Order(product, cost_of_export, 100))
+        mid_price = int((highest_buy_order_price + lowest_sell_order_price) / 2)
+
+        limit_width = 100
+
+        print(f"Position: {position}, Cost of Import: {cost_of_import}, Cost of Export: {cost_of_export}")
+        print(f"Lowest Sell: {lowest_sell_order_price}, Highest Buy: {highest_buy_order_price}")
+
+        orders.append(Order(product, mid_price - 1, -limit_width))
+        conversions = -position
+
+        # # else:
+        #     # Basically the MarketMaker logic
+        # buy_order_price = lowest_buy_order_price
+        # sell_order_price = highest_sell_order_price
+
+        # buy_order_price += 1
+        # sell_order_price -= 1
+
+        # if position < 0:
+        #     buy_order_price += 1
+        # if position < -(limit_width / 2):
+        #     buy_order_price += 1
+        
+        # if position > 0:
+        #     sell_order_price -= 1
+        # if position > (limit_width / 2):
+        #     sell_order_price -= 1
+
+        # sell_quantity = -limit_width - position
+        # orders.append(Order(product, sell_order_price, sell_quantity))
+
+        # buy_quantity = limit_width - position
+        # orders.append(Order(product, buy_order_price, buy_quantity))
 
         # sunlight_delta = sunlight - data.get("prev_sunlight", 0)
         # humidity_delta = humidity - data.get("prev_humidity", 0)
