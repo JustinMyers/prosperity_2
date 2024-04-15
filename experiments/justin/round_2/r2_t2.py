@@ -2,53 +2,6 @@ from datamodel import OrderDepth, UserId, TradingState, Order
 from typing import List
 import jsonpickle
 
-class AmethystTrader:
-    def run(self, state: TradingState, product: str, data: dict):
-        orders: List[Order] = []
-
-        position = state.position[product] if product in state.position else 0
-
-        limit_width = 20
-
-        orders: List[Order] = []
-
-        sell_quantity = -limit_width - position
-        orders.append(Order(product, 10002, sell_quantity))
-        buy_quantity = limit_width - position
-        orders.append(Order(product, 9998, buy_quantity))
-
-        return orders, 0, data
-
-class StarfruitTrader:
-    def run(self, state: TradingState, product: str, data: dict):
-        order_depth: OrderDepth = state.order_depths[product]
-
-        orders: List[Order] = []
-
-        position = state.position[product] if product in state.position else 0
-
-        limit_width = 20
-
-        orders: List[Order] = []
-
-        buy_orders = order_depth.buy_orders
-        buy_order_prices = sorted(buy_orders.keys())
-        buy_order_price = buy_order_prices[0]
-        buy_order_price += 1
-        
-        sell_orders = order_depth.sell_orders
-        sell_order_prices = sorted(sell_orders.keys(), reverse=True)
-        sell_order_price = sell_order_prices[0]
-        sell_order_price -= 1
-
-        sell_quantity = -limit_width - position
-        orders.append(Order(product, sell_order_price, sell_quantity))
-
-        buy_quantity = limit_width - position
-        orders.append(Order(product, buy_order_price, buy_quantity))
-
-        return orders, 0, data
-
 class OrchidTrader:
     def run(self, state: TradingState, product: str, data: dict):
         order_depth: OrderDepth = state.order_depths[product]
@@ -85,8 +38,33 @@ class OrchidTrader:
         print(f"Position: {position}, Cost of Import: {cost_of_import}, Cost of Export: {cost_of_export}")
         print(f"Lowest Sell: {lowest_sell_order_price}, Highest Buy: {highest_buy_order_price}")
 
-        orders.append(Order(product, mid_price - 1, -limit_width))
+        orders.append(Order(product, mid_price - 1, -80))
+        orders.append(Order(product, mid_price - 2, -20))
         conversions = -position
+
+        # # else:
+        #     # Basically the MarketMaker logic
+        # buy_order_price = lowest_buy_order_price
+        # sell_order_price = highest_sell_order_price
+
+        # buy_order_price += 1
+        # sell_order_price -= 1
+
+        # if position < 0:
+        #     buy_order_price += 1
+        # if position < -(limit_width / 2):
+        #     buy_order_price += 1
+        
+        # if position > 0:
+        #     sell_order_price -= 1
+        # if position > (limit_width / 2):
+        #     sell_order_price -= 1
+
+        # sell_quantity = -limit_width - position
+        # orders.append(Order(product, sell_order_price, sell_quantity))
+
+        # buy_quantity = limit_width - position
+        # orders.append(Order(product, buy_order_price, buy_quantity))
 
         # sunlight_delta = sunlight - data.get("prev_sunlight", 0)
         # humidity_delta = humidity - data.get("prev_humidity", 0)
@@ -125,12 +103,6 @@ class Trader:
                 trader = OrchidTrader()
                 result[product], orchid_conversions, traderData[product] = trader.run(state, product, traderData[product])
                 conversions += orchid_conversions
-            elif product == "AMETHYSTS":
-                trader = AmethystTrader()
-                result[product], amethyst_conversions, traderData[product] = trader.run(state, product, traderData[product])
-            elif product == "STARFRUIT":
-                trader = StarfruitTrader()
-                result[product], starfruit_conversions, traderData[product] = trader.run(state, product, traderData[product])
 
         traderData = jsonpickle.encode(traderData)
         return result, conversions, traderData

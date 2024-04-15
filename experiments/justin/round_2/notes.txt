@@ -1,0 +1,1 @@
+TRADER r2_t1.py has all the strategies and products being traded.
