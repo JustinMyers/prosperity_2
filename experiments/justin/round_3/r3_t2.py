@@ -5,29 +5,44 @@ import jsonpickle
 class BasketTrader:
     def run(self, state: TradingState, product: str, data: dict):
         order_depth: OrderDepth = state.order_depths["GIFT_BASKET"]
-
         gift_basket_buy_orders = order_depth.buy_orders
         gift_basket_buy_order_prices = sorted(gift_basket_buy_orders.keys())
-        gift_basket_lowest_buy_order_price = gift_basket_buy_order_prices[0]
         gift_basket_highest_buy_order_price = gift_basket_buy_order_prices[-1]
-        
         gift_basket_sell_orders = order_depth.sell_orders
         gift_basket_sell_order_prices = sorted(gift_basket_sell_orders.keys())
         gift_basket_lowest_sell_order_price = gift_basket_sell_order_prices[0]
-        gift_basket_highest_sell_order_price = gift_basket_sell_order_prices[-1]
-
         gift_basket_mid_price = int((gift_basket_highest_buy_order_price + gift_basket_lowest_sell_order_price) / 2)
 
-        print(f"Gift Basket Mid Price: {gift_basket_mid_price}, ")
+        order_depth: OrderDepth = state.order_depths["CHOCOLATE"]
+        chocolate_buy_orders = order_depth.buy_orders
+        chocolate_buy_order_prices = sorted(chocolate_buy_orders.keys())
+        chocolate_highest_buy_order_price = chocolate_buy_order_prices[-1]
+        chocolate_sell_orders = order_depth.sell_orders
+        chocolate_sell_order_prices = sorted(chocolate_sell_orders.keys())
+        chocolate_lowest_sell_order_price = chocolate_sell_order_prices[0]
+        chocolate_mid_price = int((chocolate_highest_buy_order_price + chocolate_lowest_sell_order_price) / 2)
 
-        sum_of_basket_products = chocolate_mid_price * 4 + strawberries_mid_price * 6 + roses_mid_price
-        data["GIFT_BASKET"]["prev_sums_of_basket_products"].append(sum_of_basket_products)
-        
+        order_depth: OrderDepth = state.order_depths["STRAWBERRIES"]
+        strawberries_buy_orders = order_depth.buy_orders
+        strawberries_buy_order_prices = sorted(strawberries_buy_orders.keys())
+        strawberries_highest_buy_order_price = strawberries_buy_order_prices[-1]
+        strawberries_sell_orders = order_depth.sell_orders
+        strawberries_sell_order_prices = sorted(strawberries_sell_orders.keys())
+        strawberries_lowest_sell_order_price = strawberries_sell_order_prices[0]
+        strawberries_mid_price = int((strawberries_highest_buy_order_price + strawberries_lowest_sell_order_price) / 2)
+
+        order_depth: OrderDepth = state.order_depths["ROSES"]
+        roses_buy_orders = order_depth.buy_orders
+        roses_buy_order_prices = sorted(roses_buy_orders.keys())
+        roses_highest_buy_order_price = roses_buy_order_prices[-1]
+        roses_sell_orders = order_depth.sell_orders
+        roses_sell_order_prices = sorted(roses_sell_orders.keys())
+        roses_lowest_sell_order_price = roses_sell_order_prices[0]
+        roses_mid_price = int((roses_highest_buy_order_price + roses_lowest_sell_order_price) / 2)
+
+        sum_of_basket_products = chocolate_mid_price * 4 + strawberries_mid_price * 6 + roses_mid_price        
         basket_ratio = sum_of_basket_products / gift_basket_mid_price
-
         data["GIFT_BASKET"]["prev_basket_ratios"].append(basket_ratio)
-
-        print(f"Sum of Basket Products: {sum_of_basket_products}, ")
 
         orders = {
             "CHOCOLATE": [],
@@ -38,20 +53,18 @@ class BasketTrader:
 
         gift_basket_limit_width = 60
 
-        negative_price_modifier = -1
-        positive_price_modifier = 6
-        avg_history_length = 20
+        price_modifier = 3
 
         gift_basket_position = state.position["GIFT_BASKET"] if "GIFT_BASKET" in state.position else 0
-        recent_avg_sums_of_basket_products = sum(data["GIFT_BASKET"]["prev_sums_of_basket_products"][-avg_history_length:]) / len(data["GIFT_BASKET"]["prev_sums_of_basket_products"][-avg_history_length:])
-        median_basket_ratio = sorted(data["GIFT_BASKET"]["prev_basket_ratios"])[int(len(data["GIFT_BASKET"]["prev_basket_ratios"]) / 2)]
+
         low_basket_ratio = sorted(data["GIFT_BASKET"]["prev_basket_ratios"])[int(len(data["GIFT_BASKET"]["prev_basket_ratios"]) / 3)]
+        # median_basket_ratio = sorted(data["GIFT_BASKET"]["prev_basket_ratios"])[int(len(data["GIFT_BASKET"]["prev_basket_ratios"]) / 2)]
         high_basket_ratio = sorted(data["GIFT_BASKET"]["prev_basket_ratios"])[int(len(data["GIFT_BASKET"]["prev_basket_ratios"]) / 3 * 2)]
 
         if basket_ratio < low_basket_ratio:
-            orders["GIFT_BASKET"].append(Order("GIFT_BASKET", gift_basket_lowest_sell_order_price + negative_price_modifier, -gift_basket_limit_width - gift_basket_position))
+            orders["GIFT_BASKET"].append(Order("GIFT_BASKET", gift_basket_lowest_sell_order_price - price_modifier, -gift_basket_limit_width - gift_basket_position))
         elif basket_ratio > high_basket_ratio:
-            orders["GIFT_BASKET"].append(Order("GIFT_BASKET", gift_basket_highest_buy_order_price - negative_price_modifier, gift_basket_limit_width - gift_basket_position))
+            orders["GIFT_BASKET"].append(Order("GIFT_BASKET", gift_basket_highest_buy_order_price + price_modifier, gift_basket_limit_width - gift_basket_position))
 
         return orders, 0, data
 
