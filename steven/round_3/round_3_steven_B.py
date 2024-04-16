@@ -264,7 +264,12 @@ class BasketTrader:
 
         order_depth: OrderDepth = state.order_depths["GIFT_BASKET"]
 
-        orders: List[Order] = []
+        # orders: List[Order] = []
+        chocolate_orders: List[Order] = []
+        strawberries_orders: List[Order] = []
+        roses_orders: List[Order] = []
+        gb_orders: List[Order] = []
+        
 
         # buy_orders = order_depth.buy_orders
         # buy_order_prices = sorted(buy_orders.keys())
@@ -301,34 +306,40 @@ class BasketTrader:
             gb_buy_order_price = gb_buy_order_price
             # gb_buy_quantity = limit_width - gb_position
             gb_buy_quantity = gb_min_neg_position - gb_position
-            orders.append(Order("GIFT_BASKET", gb_buy_order_price, gb_buy_quantity))
+            gb_orders.append(Order("GIFT_BASKET", gb_buy_order_price, gb_buy_quantity))
         else:
             # buy_quantity = limit_width - position
             # orders.append(Order(product, buy_order_price, buy_quantity))
             chocolate_buy_quantity = chocolate_limit - chocolate_position
-            orders.append(Order("CHOCOLATE", chocolate_buy_order_price, chocolate_buy_quantity))
+            chocolate_orders.append(Order("CHOCOLATE", chocolate_buy_order_price, chocolate_buy_quantity))
             strawberries_buy_quantity = strawberries_limit - strawberries_position
-            orders.append(Order("STRAWBERRIES", strawberries_buy_order_price, strawberries_buy_quantity))
+            strawberries_orders.append(Order("STRAWBERRIES", strawberries_buy_order_price, strawberries_buy_quantity))
             roses_buy_quantity = roses_limit - roses_position
-            orders.append(Order("ROSES", roses_buy_order_price, roses_buy_quantity))
+            roses_orders.append(Order("ROSES", roses_buy_order_price, roses_buy_quantity))
 
         if gb_sell_order_price > gb_components_sell_order_price:
             gb_sell_order_price = gb_sell_order_price
             # gb_sell_quantity = -limit_width - gb_position
             gb_sell_quantity = -gb_max_pos_position - gb_position
-            orders.append(Order("GIFT_BASKET", gb_sell_order_price, gb_sell_quantity))
+            gb_orders.append(Order("GIFT_BASKET", gb_sell_order_price, gb_sell_quantity))
         else:
             # sell_quantity = -limit_width - position
             # orders.append(Order(product, sell_order_price, sell_quantity))
             chocolate_sell_quantity = -chocolate_limit - chocolate_position
-            orders.append(Order("CHOCOLATE", chocolate_sell_order_price, chocolate_sell_quantity))
+            chocolate_orders.append(Order("CHOCOLATE", chocolate_sell_order_price, chocolate_sell_quantity))
             strawberries_sell_quantity = -strawberries_limit - strawberries_position
-            orders.append(Order("STRAWBERRIES", strawberries_sell_order_price, strawberries_sell_quantity))
+            strawberries_orders.append(Order("STRAWBERRIES", strawberries_sell_order_price, strawberries_sell_quantity))
             roses_sell_quantity = -roses_limit - roses_position
-            orders.append(Order("ROSES", roses_sell_order_price, roses_sell_quantity))
+            roses_orders.append(Order("ROSES", roses_sell_order_price, roses_sell_quantity))
 
+        result = {}
+        result["CHOCOLATE"] = chocolate_orders
+        result["STRAWBERRIES"] = strawberries_orders
+        result["ROSES"] = roses_orders
+        result["GIFT_BASKET"] = gb_orders
+        
         # return orders, 0, data
-        return orders, 0
+        return result, 0
 
 class Trader:    
     def run(self, state: TradingState):
@@ -382,8 +393,8 @@ class Trader:
         
         print("TRADER_LOG  main_loop  timestamp:", timestamp_str)
 
-        # trader = BasketTrader()
-        result, basket_conversions = BasketTrader.run(state)
+        trader = BasketTrader()
+        result, basket_conversions = trader.run(state)
         
         traderData = jsonpickle.encode(traderData)
         return result, conversions, traderData

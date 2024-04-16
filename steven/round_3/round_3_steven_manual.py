@@ -1,3 +1,10 @@
+from pathlib import Path
+import json
+import pandas as pd
+from pprint import pprint
+# import re
+
+
 map_values = {"G26": {"multiplier": 24, "hunters": 2},
               "G27": {"multiplier": 70, "hunters": 4},
               "G28": {"multiplier": 41, "hunters": 3},
@@ -29,19 +36,35 @@ map_values = {"G26": {"multiplier": 24, "hunters": 2},
               "K30": {"multiplier": 30, "hunters": 3},
               }
 
-print(map_values)
+# print(map_values)
 
 tile_results = []
 for tile_key in map_values:
     tile_values = map_values[tile_key]
     basic_value = tile_values["multiplier"] / tile_values["hunters"]
     
-    print(tile_key, basic_value, tile_values)
+    # print(tile_key, basic_value, tile_values)
     tile_results += [[basic_value, tile_key, tile_values]]
     
-print("---")
+# print("---")
 # print(tile_results)
-for tile_result in sorted(tile_results):
-    print(tile_result)
+# for tile_result in sorted(tile_results):
+#     print(tile_result)
 
-    
+tile_results_player_pcts = [["Tile", "multiplier", "hunters", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"]]
+for tile_key in map_values:
+    tile_values = map_values[tile_key]
+    multiplier = tile_values["multiplier"]
+    hunters = tile_values["hunters"]
+    # basic_value = multiplier / hunters
+    tile_results = [tile_key, multiplier, hunters]
+    for player_pct in range(16):
+        result_with_player_pct = multiplier / (hunters + player_pct)
+        tile_results += [result_with_player_pct]
+    tile_results_player_pcts += [tile_results]
+
+
+tile_results_player_pcts_df = pd.DataFrame.from_records(tile_results_player_pcts)
+
+with pd.ExcelWriter('round_3_manual_tile_results.xlsx') as writer:
+    tile_results_player_pcts_df.to_excel(writer, sheet_name='Round 3 Manual')
