@@ -104,7 +104,13 @@ previous_comps_mid_1 = 0
 previous_comps_mid_2 = 0
 previous_comps_mid_3 = 0
 previous_comps_mid_4 = 0
-for timestamp in sorted(activities_timestamps_to_midprices.keys()):
+
+timestamps_numbers = [x for x in list(activities_timestamps_to_midprices.keys()) if x not in ["timestamp"]]
+timestamps_numbers.sort(key = int)
+# timestamp_list = ["timestamp"]
+# timestamp_list.extend(timestamps_numbers)
+
+for timestamp in timestamps_numbers:
     timestamp_midprices = activities_timestamps_to_midprices[timestamp]
     tm_keys = timestamp_midprices.keys()
     basket_mid = float(timestamp_midprices["GIFT_BASKET"])
