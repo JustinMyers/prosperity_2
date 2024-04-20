@@ -1,0 +1,32 @@
+        coconut_position = state.position["COCONUT"] if "COCONUT" in state.position else 0
+        coconut_coupon_position = state.position["COCONUT_COUPON"] if "COCONUT_COUPON" in state.position else 0
+
+        coconut_conversions = 0
+        
+        certain_coconut_price = 10000
+
+        coconut_excess_price = coconut_mid_price - certain_coconut_price
+
+        # target_coupon_price = coconut_excess_price / 3 + 
+
+        # THIS STRAT GOT ABOUT 12K
+        # if coconut_excess_price * 100 > coconut_coupon_mid_price:
+        #     orders["COCONUT_COUPON"].append(Order("COCONUT_COUPON", coconut_coupon_mid_price, coconut_coupon_limit_width - coconut_coupon_position))
+        # else:
+        #     orders["COCONUT_COUPON"].append(Order("COCONUT_COUPON", coconut_coupon_mid_price, -coconut_coupon_limit_width - coconut_coupon_position))
+        coconut_position = state.position["COCONUT"] if "COCONUT" in state.position else 0
+        coconut_coupon_position = state.position["COCONUT_COUPON"] if "COCONUT_COUPON" in state.position else 0
+
+        coconut_conversions = 0
+        
+        certain_coconut_price = 10000
+
+        coconut_excess_price = coconut_mid_price - certain_coconut_price
+
+        # target_coupon_price = coconut_excess_price / 3 + 
+
+        # THIS STRAT GOT ABOUT 12K
+        # if coconut_excess_price * 100 > coconut_coupon_mid_price:
+        #     orders["COCONUT_COUPON"].append(Order("COCONUT_COUPON", coconut_coupon_mid_price, coconut_coupon_limit_width - coconut_coupon_position))
+        # else:
+        #     orders["COCONUT_COUPON"].append(Order("COCONUT_COUPON", coconut_coupon_mid_price, -coconut_coupon_limit_width - coconut_coupon_position))
