@@ -52,7 +52,7 @@ class CoconutTrader:
         else:
             orders["COCONUT_COUPON"].append(Order("COCONUT_COUPON", coconut_coupon_mid_price + coupon_spread, -coconut_coupon_limit_width - coconut_coupon_position))
 
-        coupon_lookback_period = 70
+        coupon_lookback_period = 50
         coupon_lookback_width = 5
         lb_max = coupon_lookback_period + coupon_lookback_width
         lb_min = coupon_lookback_period - coupon_lookback_width
@@ -277,24 +277,24 @@ class Trader:
 
         conversions = 0
 
-        # for product in state.order_depths:
-        #     if product == "ORCHIDS":
-        #         trader = OrchidTrader()
-        #         result[product], orchid_conversions, traderData[product] = trader.run(state, product, traderData[product])
-        #         conversions += orchid_conversions
-        #     elif product == "AMETHYSTS":
-        #         trader = AmethystTrader()
-        #         result[product], amethyst_conversions, traderData[product] = trader.run(state, product, traderData[product])
-        #     elif product == "STARFRUIT":
-        #         trader = StarfruitTrader()
-        #         result[product], starfruit_conversions, traderData[product] = trader.run(state, product, traderData[product])
+        for product in state.order_depths:
+            if product == "ORCHIDS":
+                trader = OrchidTrader()
+                result[product], orchid_conversions, traderData[product] = trader.run(state, product, traderData[product])
+                conversions += orchid_conversions
+            elif product == "AMETHYSTS":
+                trader = AmethystTrader()
+                result[product], amethyst_conversions, traderData[product] = trader.run(state, product, traderData[product])
+            elif product == "STARFRUIT":
+                trader = StarfruitTrader()
+                result[product], starfruit_conversions, traderData[product] = trader.run(state, product, traderData[product])
         
-        # basket_trader = BasketTrader()
-        # basket_result, basket_conversions, traderData["BASKET"] = basket_trader.run(state, "BASKET", traderData["BASKET"])
-        # result["CHOCOLATE"] = basket_result["CHOCOLATE"]
-        # result["STRAWBERRIES"] = basket_result["STRAWBERRIES"]
-        # result["ROSES"] = basket_result["ROSES"]
-        # result["GIFT_BASKET"] = basket_result["GIFT_BASKET"]
+        basket_trader = BasketTrader()
+        basket_result, basket_conversions, traderData["BASKET"] = basket_trader.run(state, "BASKET", traderData["BASKET"])
+        result["CHOCOLATE"] = basket_result["CHOCOLATE"]
+        result["STRAWBERRIES"] = basket_result["STRAWBERRIES"]
+        result["ROSES"] = basket_result["ROSES"]
+        result["GIFT_BASKET"] = basket_result["GIFT_BASKET"]
 
         coconut_trader = CoconutTrader()
         coconut_result, coconut_conversions, traderData["COCONUT"] = coconut_trader.run(state, "COCONUT", traderData["COCONUT"])
